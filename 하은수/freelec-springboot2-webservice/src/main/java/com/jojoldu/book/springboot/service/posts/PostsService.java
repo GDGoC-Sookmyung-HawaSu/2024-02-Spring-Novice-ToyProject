@@ -3,6 +3,8 @@ package com.jojoldu.book.springboot.service.posts;
 
 import com.jojoldu.book.springboot.domain.posts.Posts;
 import com.jojoldu.book.springboot.domain.posts.PostsRepository;
+import com.jojoldu.book.springboot.domain.user.User;
+import com.jojoldu.book.springboot.domain.user.UserRepository;
 import com.jojoldu.book.springboot.web.dto.PostsListResponseDto;
 import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
 import com.jojoldu.book.springboot.web.dto.PostsSaveRequestDto;
@@ -19,11 +21,14 @@ import java.util.stream.Collectors;
 @Service
 public class PostsService {
     private final PostsRepository postsRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public Long save(PostsSaveRequestDto requestDto) {
-        return postsRepository.save(requestDto.toEntity()).
-                getId();
+        User author = userRepository.findById(requestDto.getAuthorId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 작성자가 없습니다. id=" + requestDto.getAuthorId()));
+        Posts post = requestDto.toEntity(author);
+        return postsRepository.save(post).getId();
     }
 
     @Transactional
