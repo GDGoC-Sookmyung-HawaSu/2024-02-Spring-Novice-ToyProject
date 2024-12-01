@@ -1,5 +1,8 @@
 package com.jojoldu.book.springboot.web;
 
+import com.jojoldu.book.springboot.config.auth.LoginUser;
+import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
+import com.jojoldu.book.springboot.domain.user.User;
 import com.jojoldu.book.springboot.service.posts.PostsService;
 import com.jojoldu.book.springboot.web.dto.PostsListResponseDto;
 import com.jojoldu.book.springboot.web.dto.PostsResponseDto;
@@ -7,8 +10,12 @@ import com.jojoldu.book.springboot.web.dto.PostsSaveRequestDto;
 
 import com.jojoldu.book.springboot.web.dto.PostsUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,8 +26,9 @@ public class PostsApiController {
     private final PostsService postsService;
 
     @PostMapping
-    public Long save(@RequestBody PostsSaveRequestDto requestDto) {
-        return postsService.save(requestDto);
+    public Long save(@RequestBody PostsSaveRequestDto requestDto, @LoginUser SessionUser sessionUser) {
+
+        return postsService.save(requestDto, sessionUser);
     }
 
     @GetMapping
