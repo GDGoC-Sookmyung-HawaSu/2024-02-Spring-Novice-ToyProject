@@ -1,6 +1,7 @@
 package com.jojoldu.book.springboot.service.posts;
 
 
+import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
 import com.jojoldu.book.springboot.domain.posts.Posts;
 import com.jojoldu.book.springboot.domain.posts.PostsRepository;
 import com.jojoldu.book.springboot.domain.user.User;
@@ -24,10 +25,14 @@ public class PostsService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long save(PostsSaveRequestDto requestDto) {
-        User author = userRepository.findById(requestDto.getAuthorId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 작성자가 없습니다. id=" + requestDto.getAuthorId()));
-        Posts post = requestDto.toEntity(author);
+    public Long save(PostsSaveRequestDto requestDto, SessionUser sessionUser) {
+        String email = sessionUser.getEmail();
+
+        // 이메일을 사용하여 User 객체를 조회
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다. email=" + email));
+
+        Posts post = requestDto.toEntity(user);
         return postsRepository.save(post).getId();
     }
 

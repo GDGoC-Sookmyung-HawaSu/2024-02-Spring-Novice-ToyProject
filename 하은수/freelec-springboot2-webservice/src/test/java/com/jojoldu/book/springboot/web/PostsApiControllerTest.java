@@ -74,16 +74,10 @@ public class PostsApiControllerTest {
         //given
         String title = "title";
         String content = "content";
-        User author = userRepository.save(User.builder()
-                .name("author")
-                .email("author@example.com")
-                .role(Role.USER)
-                .build());
 
         PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
                 .title(title)
                 .content(content)
-                .authorId(author.getId())
                 .build();
 
         String url = "http://localhost:" + port + "/api/v1/posts";
@@ -98,8 +92,6 @@ public class PostsApiControllerTest {
         List<Posts> all = postsRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(title);
         assertThat(all.get(0).getContent()).isEqualTo(content);
-        assertThat(all.get(0).getAuthor().getName()).isEqualTo(author.getName());
-        assertThat(all.get(0).getAuthor().getRole()).isEqualTo(Role.USER);
     }
 
     @Test

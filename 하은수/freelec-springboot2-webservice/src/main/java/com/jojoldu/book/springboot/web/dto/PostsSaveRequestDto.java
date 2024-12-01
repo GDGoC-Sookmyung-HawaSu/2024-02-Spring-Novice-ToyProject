@@ -12,12 +12,10 @@ import lombok.NoArgsConstructor;
 public class PostsSaveRequestDto {
     private String title;
     private String content;
-    private Long authorId;
     @Builder
-    public PostsSaveRequestDto(String title, String content, Long authorId) {
+    public PostsSaveRequestDto(String title, String content) {
         this.title = title;
         this.content = content;
-        this.authorId = authorId;
     }
 
     public Posts toEntity(User author) {
