@@ -3,6 +3,8 @@ package com.jojoldu.book.springboot.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jojoldu.book.springboot.domain.posts.Posts;
 import com.jojoldu.book.springboot.domain.posts.PostsRepository;
+import com.jojoldu.book.springboot.domain.user.User;
+import com.jojoldu.book.springboot.domain.user.UserRepository;
 import com.jojoldu.book.springboot.web.dto.PostsSaveRequestDto;
 
 import com.jojoldu.book.springboot.web.dto.PostsUpdateRequestDto;
@@ -44,6 +46,9 @@ public class PostsApiControllerTest {
     private PostsRepository postsRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private WebApplicationContext context;
 
     private MockMvc mvc;
@@ -67,10 +72,15 @@ public class PostsApiControllerTest {
         //given
         String title = "title";
         String content = "content";
+        User author = userRepository.save(User.builder()
+                .name("author")
+                .email("author@example.com")
+                .build());
+
         PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
                 .title(title)
                 .content(content)
-                .author("author")
+                .authorId(author.getId())
                 .build();
 
         String url = "http://localhost:" + port + "/api/v1/posts";
@@ -85,13 +95,23 @@ public class PostsApiControllerTest {
         List<Posts> all = postsRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(title);
         assertThat(all.get(0).getContent()).isEqualTo(content);
+        assertThat(all.get(0).getAuthor().getName()).isEqualTo(author.getName());
     }
 
     @Test
     @WithMockUser(roles="USER")
     public void Posts_수정된다() throws Exception {
         //given
-        Posts savedPosts = postsRepository.save(Posts.builder().title("title").content("content").author("author").build());
+        User author = userRepository.save(User.builder()
+                .name("author")
+                .email("author@example.com")
+                .build());
+
+        Posts savedPosts = postsRepository.save(Posts.builder()
+                .title("title")
+                .content("content")
+                .author(author)
+                .build());
 
         Long updateId = savedPosts.getId();
         String expectedTitle = "title2";
