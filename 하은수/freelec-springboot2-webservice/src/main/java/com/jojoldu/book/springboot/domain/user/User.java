@@ -32,7 +32,7 @@ public class User extends BaseTimeEntity {
     private String picture;
 
     @Enumerated(EnumType.STRING)
-    //@Column(nullable = false)
+    @Column(nullable = false)
     private Role role;
 
     @Builder

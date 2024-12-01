@@ -3,6 +3,7 @@ package com.jojoldu.book.springboot.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jojoldu.book.springboot.domain.posts.Posts;
 import com.jojoldu.book.springboot.domain.posts.PostsRepository;
+import com.jojoldu.book.springboot.domain.user.Role;
 import com.jojoldu.book.springboot.domain.user.User;
 import com.jojoldu.book.springboot.domain.user.UserRepository;
 import com.jojoldu.book.springboot.web.dto.PostsSaveRequestDto;
@@ -64,6 +65,7 @@ public class PostsApiControllerTest {
     @AfterEach
     public void tearDown() throws Exception {
         postsRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
@@ -75,6 +77,7 @@ public class PostsApiControllerTest {
         User author = userRepository.save(User.builder()
                 .name("author")
                 .email("author@example.com")
+                .role(Role.USER)
                 .build());
 
         PostsSaveRequestDto requestDto = PostsSaveRequestDto.builder()
@@ -96,6 +99,7 @@ public class PostsApiControllerTest {
         assertThat(all.get(0).getTitle()).isEqualTo(title);
         assertThat(all.get(0).getContent()).isEqualTo(content);
         assertThat(all.get(0).getAuthor().getName()).isEqualTo(author.getName());
+        assertThat(all.get(0).getAuthor().getRole()).isEqualTo(Role.USER);
     }
 
     @Test
@@ -105,6 +109,7 @@ public class PostsApiControllerTest {
         User author = userRepository.save(User.builder()
                 .name("author")
                 .email("author@example.com")
+                .role(Role.USER)
                 .build());
 
         Posts savedPosts = postsRepository.save(Posts.builder()

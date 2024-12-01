@@ -1,5 +1,6 @@
 package com.jojoldu.book.springboot.domain.posts;
 
+import com.jojoldu.book.springboot.domain.user.Role;
 import com.jojoldu.book.springboot.domain.user.User;
 import com.jojoldu.book.springboot.domain.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -40,6 +41,7 @@ public class PostsRepositoryTest {
         User user = userRepository.save(User.builder()
                 .name("작성자 이름")
                 .email("author@example.com")
+                .role(Role.USER)
                 .build());
 
         postsRepository.save(Posts.builder()
@@ -66,6 +68,7 @@ public class PostsRepositoryTest {
         User user = userRepository.save(User.builder()
                 .name("작성자 이름")
                 .email("author@example.com")
+                .role(Role.USER)
                 .build());
 
         postsRepository.save(Posts.builder()
