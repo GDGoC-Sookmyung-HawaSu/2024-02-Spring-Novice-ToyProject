@@ -13,6 +13,8 @@ public class PostsListResponseDto {
     private String title;
     private String author;
     private LocalDateTime modifiedDate;
+    private boolean following; // 로그인 유저가 해당 사용자를 팔로잉 하고 있는지 여부
+    private boolean isAuthor; // 로그인 유저가 작성자인지
 
     public PostsListResponseDto(Posts entity) {
         this.id = entity.getId();
@@ -20,5 +22,13 @@ public class PostsListResponseDto {
         this.title = entity.getTitle();
         this.author = entity.getAuthor().getName();
         this.modifiedDate = entity.getModifiedDate();
+    }
+
+    public void setFollowing(boolean following) {
+        this.following = following;
+    }
+
+    public void setIsAuthor(boolean isAuthor) {
+        this.isAuthor = isAuthor;
     }
 }

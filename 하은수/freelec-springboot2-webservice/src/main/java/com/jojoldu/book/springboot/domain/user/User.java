@@ -1,18 +1,14 @@
 package com.jojoldu.book.springboot.domain.user;
 
 import com.jojoldu.book.springboot.domain.BaseTimeEntity;
+import com.jojoldu.book.springboot.domain.follow.Follow;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor

@@ -24,6 +24,7 @@
             <th>게시글번호</th>
             <th>제목</th>
             <th>작성자</th>
+            <th>팔로우</th>
             <th>최종수정일</th>
         </tr>
         </thead>
@@ -33,6 +34,17 @@
                 <td>{{id}}</td>
                 <td><a href="/posts/update/{{id}}">{{title}}</a></td>
                 <td>{{author}}</td>
+                <td>
+                    {{#loggedIn}}
+                        {{^isAuthor}}
+                            <button
+                                    class="btn btn-sm {{#following}}btn-secondary unfollow-btn{{/following}}{{^following}}btn-success follow-btn{{/following}}"
+                                    data-author-id="{{authorId}}">
+                                {{#following}}Unfollow{{/following}}{{^following}}Follow{{/following}}
+                            </button>
+                        {{/isAuthor}}
+                    {{/loggedIn}}
+                </td>
                 <td>{{modifiedDate}}</td>
             </tr>
         {{/posts}}
@@ -40,4 +52,49 @@
     </table>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tbody = document.getElementById('tbody');
+
+        tbody.addEventListener('click', async (event) => {
+            const button = event.target;
+            if (!button.matches('.follow-btn, .unfollow-btn')) return;
+
+            const authorId = button.getAttribute('data-author-id');
+            const userId = document.getElementById('user').dataset.userId;
+
+            const isFollowing = button.classList.contains('unfollow-btn');
+            const url = isFollowing
+                    ? `/api/follow/${userId}/unfollow/${authorId}`
+                    : `/api/follow/${userId}/follow/${authorId}`;
+
+            try {
+                const response = await fetch(url, {
+                    method: isFollowing ? 'DELETE' : 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+
+                if (!response.ok) {
+                    const errorMessage = await response.text();
+                    throw new Error(errorMessage || 'Request failed');
+                }
+
+                // 상태 변경 및 사용자 피드백
+                button.classList.toggle('btn-secondary', !isFollowing);
+                button.classList.toggle('btn-success', isFollowing);
+                button.classList.toggle('unfollow-btn', !isFollowing);
+                button.classList.toggle('follow-btn', isFollowing);
+                button.textContent = isFollowing ? 'Follow' : 'Unfollow';
+
+                alert(isFollowing ? '팔로잉이 해제되었습니다.' : '팔로잉이 완료되었습니다.');
+
+            } catch (error) {
+                console.error('Error updating follow state:', error);
+                alert('요청 처리 중 오류가 발생했습니다: ' + error.message);
+            }
+        });
+    });
+</script>
+
 {{>layout/footer}}
+
