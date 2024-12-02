@@ -1,0 +1,25 @@
+{{>layout/header}}
+
+<h1>마이페이지</h1>
+<div class="container">
+    <div class="profile">
+        <img src="{{userPicture}}" alt="Profile Picture" class="profile-picture">
+        <h2>{{userName}}</h2>
+        <p>{{userEmail}}</p>
+    </div>
+</div>
+
+<style>
+    .profile {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%; /* 원형으로 표시 */
+        object-fit: cover; /* 비율 유지하며 잘라내기 */
+    }
+</style>
+
+{{>layout/footer}}
