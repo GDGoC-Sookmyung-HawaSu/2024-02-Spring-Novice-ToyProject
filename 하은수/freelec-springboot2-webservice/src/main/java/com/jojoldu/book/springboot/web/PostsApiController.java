@@ -37,13 +37,13 @@ public class PostsApiController {
     }
 
     @PutMapping("/{id}")
-    public Long update(@PathVariable Long id, @RequestBody PostsUpdateRequestDto requestDto) {
-        return postsService.update(id, requestDto);
+    public Long update(@PathVariable Long id, @RequestBody PostsUpdateRequestDto requestDto, @LoginUser SessionUser sessionUser) {
+        return postsService.update(id, requestDto, sessionUser);
     }
 
     @DeleteMapping("/{id}")
-    public Long delete(@PathVariable Long id) {
-        postsService.delete(id);
+    public Long delete(@PathVariable Long id, @LoginUser SessionUser sessionUser) {
+        postsService.delete(id, sessionUser);
         return id;
     }
 }

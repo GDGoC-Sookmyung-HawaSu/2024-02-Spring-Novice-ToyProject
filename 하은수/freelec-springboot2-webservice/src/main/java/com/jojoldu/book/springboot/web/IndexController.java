@@ -52,9 +52,13 @@ public class IndexController {
     }
 
     @GetMapping("/posts/update/{id}")
-    public String postsUpdate(@PathVariable("id") Long id, Model model) {
+    public String postsUpdate(@PathVariable("id") Long id, Model model, @LoginUser SessionUser user) {
         PostsResponseDto dto = postsService.findById(id);
         model.addAttribute("post", dto);
+
+        if (user != null) {
+            model.addAttribute("isAuthor", user.getId().equals(dto.getAuthorId()));  // 추가된 부분
+        }
 
         return "posts-update";
     }
