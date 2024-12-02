@@ -2,6 +2,7 @@ package com.jojoldu.book.springboot.service.posts;
 
 
 import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
+import com.jojoldu.book.springboot.domain.follow.FollowRepository;
 import com.jojoldu.book.springboot.domain.posts.Posts;
 import com.jojoldu.book.springboot.domain.posts.PostsRepository;
 import com.jojoldu.book.springboot.domain.user.User;
