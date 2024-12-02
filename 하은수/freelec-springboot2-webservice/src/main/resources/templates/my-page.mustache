@@ -7,6 +7,22 @@
         <h2>{{userName}}</h2>
         <p>{{userEmail}}</p>
     </div>
+
+    <hr>
+
+    <div class="my-posts">
+        <h3>내가 쓴 글 목록</h3>
+        {{#posts}}
+            <div class="post-item">
+                <h4><a href="/posts/update/{{id}}">{{title}}</a></h4>
+                <p>최종 수정일: {{modifiedDate}}</p>
+            </div>
+            <hr>
+        {{/posts}}
+        {{^posts}}
+            <p>작성한 글이 없습니다.</p>
+        {{/posts}}
+    </div>
 </div>
 
 <style>
@@ -17,8 +33,18 @@
     .profile-picture {
         width: 150px;
         height: 150px;
-        border-radius: 50%; /* 원형으로 표시 */
-        object-fit: cover; /* 비율 유지하며 잘라내기 */
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    .my-posts {
+        margin-top: 30px;
+    }
+    .post-item h4 {
+        margin: 10px 0;
+    }
+    .post-item p {
+        margin: 5px 0;
+        color: #555;
     }
 </style>
 
