@@ -6,7 +6,8 @@
         <div class="col-md-6">
             <a href="/posts/save" role="button" class="btn btn-primary">글 등록</a>
             {{#userName}}
-                Logged in as: <span id="user">{{userName}}</span>
+                Logged in as:
+                <span id="user" data-user-id="{{userId}}">{{userName}}</span>
                 <a href="/mypage" class="btn btn-warning active" role="button">My Page</a>
                 <a href="/logout" class="btn btn-info active" role="button">Logout</a>
             {{/userName}}
