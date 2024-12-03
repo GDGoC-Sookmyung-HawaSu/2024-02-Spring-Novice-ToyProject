@@ -23,6 +23,40 @@
             <p>작성한 글이 없습니다.</p>
         {{/posts}}
     </div>
+
+    <hr>
+
+    <div class="my-follows">
+        <div class="follows">
+            <h3>내 팔로워 목록</h3>
+            {{#followers}}
+                <div class="follow-item">
+                    <p><strong>이름:</strong> {{followerName}}</p>
+                    <p><strong>이메일:</strong> {{followerEmail}}</p>
+                </div>
+                <hr>
+            {{/followers}}
+            {{^followers}}
+                <p>팔로워가 없습니다.</p>
+            {{/followers}}
+        </div>
+
+        <hr>
+
+        <div class="followings">
+            <h3>내 팔로잉 목록</h3>
+            {{#followings}}
+                <div class="following-item">
+                    <p><strong>이름:</strong> {{followeeName}}</p>
+                    <p><strong>이메일:</strong> {{followeeEmail}}</p>
+                </div>
+                <hr>
+            {{/followings}}
+            {{^followings}}
+                <p>팔로잉한 사람이 없습니다.</p>
+            {{/followings}}
+        </div>
+    </div>
 </div>
 
 <style>
@@ -36,14 +70,19 @@
         border-radius: 50%;
         object-fit: cover;
     }
-    .my-posts {
+    .my-posts, .my-follows {
         margin-top: 30px;
     }
-    .post-item h4 {
+    .post-item, .follow-item, .following-item {
         margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .post-item h4, .follow-item p, .following-item p {
+        margin: 0;
     }
     .post-item p {
-        margin: 5px 0;
         color: #555;
     }
 </style>
