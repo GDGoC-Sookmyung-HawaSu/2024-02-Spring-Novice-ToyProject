@@ -3,6 +3,7 @@ package com.jojoldu.book.springboot.web;
 
 import com.jojoldu.book.springboot.config.auth.LoginUser;
 import com.jojoldu.book.springboot.config.auth.dto.SessionUser;
+import com.jojoldu.book.springboot.service.FollowService;
 import com.jojoldu.book.springboot.service.posts.PostsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MyPageController {
 
     private final PostsService postsService;
+    private final FollowService followService;
 
     @GetMapping("/mypage")
     public String myPage(Model model, @LoginUser SessionUser user) {
@@ -24,6 +26,9 @@ public class MyPageController {
         model.addAttribute("userPicture", user.getPicture());
 
         model.addAttribute("posts", postsService.findPostsByUser(user.getEmail()));
+
+        model.addAttribute("followings", followService.getFollowing(user.getId()));
+        model.addAttribute("followers", followService.getFollowers(user.getId()));
         return "my-page";
     }
 
